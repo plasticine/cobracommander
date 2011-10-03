@@ -26,11 +26,31 @@ MIDDLEWARE_CLASSES = tuple(MIDDLEWARE_CLASSES)
 # --------------------------------------
 DEVELOPMENT_APPS = [
     'django_extensions',
-    'debug_toolbar'
+    'debug_toolbar',
+    'devserver'
 ]
 INSTALLED_APPS = list(INSTALLED_APPS)
 INSTALLED_APPS += DEVELOPMENT_APPS
 INSTALLED_APPS = tuple(INSTALLED_APPS)
+
+
+# DEVSERVER
+# --------------------------------------
+DEVSERVER_MODULES = (
+    'devserver.modules.sql.SQLRealTimeModule',
+    'devserver.modules.sql.SQLSummaryModule',
+    'devserver.modules.profile.ProfileSummaryModule',
+    # Modules not enabled by default
+    'devserver.modules.ajax.AjaxDumpModule',
+    #'devserver.modules.profile.MemoryUseModule',
+    'devserver.modules.cache.CacheSummaryModule',
+    'devserver.modules.profile.LineProfilerModule',
+)
+DEVSERVER_IGNORED_PREFIXES = ['/media', '/uploads']
+DEVSERVER_DEFAULT_ADDR = '127.0.0.1'
+DEVSERVER_DEFAULT_PORT = '8000'
+DEVSERVER_TRUNCATE_SQL = False
+DEVSERVER_AJAX_CONTENT_LENGTH = 300
 
 
 # database
@@ -38,15 +58,11 @@ INSTALLED_APPS = tuple(INSTALLED_APPS)
 DATABASES['default']['NAME'] = '%s_development' % PROJECT_NAME
 
 
-# celery
-# --------------------------------------
-CELERY_SEND_TASK_ERROR_EMAILS = True
-
 
 # debug toolbar config
 # --------------------------------------
 def show_dev_toolbar(request):
-    from django.conf import settings 
+    from django.conf import settings
     if request.META['REMOTE_ADDR'] in settings.INTERNAL_IPS:
         if 'admin' not in request.META['PATH_INFO'].split('/'):
             return True
