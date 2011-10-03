@@ -27,3 +27,7 @@ GitPython
 lettuce
 eventlet
 dateutil
+sqlparse
+guppy
+line_profiler
+-e git+git://github.com/dcramer/django-devserver#egg=django-devserver
