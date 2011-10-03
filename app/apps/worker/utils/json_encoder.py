@@ -21,13 +21,6 @@ class ModelJSONEncoder(DjangoJSONEncoder):
 
     def handle_fk_field(self, obj, field):
         related = getattr(obj, field.name)
-        if related is not None:
-            if field.rel.field_name == related._meta.pk.name:
-                # Related to remote object via primary key
-                related = related._get_pk_val()
-            else:
-                # Related to remote object via other field
-                related = getattr(related, field.rel.field_name)
         return smart_unicode(related, strings_only=True)
 
     def handle_m2m_field(self, obj, field):
@@ -50,7 +43,7 @@ class ModelJSONEncoder(DjangoJSONEncoder):
             if field.serialize:
                 dic[field.name] = self.handle_m2m_field(obj, field)
         return dic
-    
+
     def handle_process(self, obj):
         return {'ppid':os.getppid(), 'pid':os.getpid()}
 
