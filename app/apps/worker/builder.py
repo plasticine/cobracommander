@@ -65,7 +65,6 @@ class Builder(object):
                     try:
                         exit_status = build_queue.get(False)
                         if exit_status == "COMPLETE" or exit_status == "QUIT":
-                            print "exit_status: %s" % exit_status
                             self.stop_build()
                             break
                     except Empty, e:
@@ -88,7 +87,6 @@ class Builder(object):
                 build_id = self.redis.lpop('build_queue')
                 try:
                     build = Build.objects.select_related().get(id=build_id)
-                    print build
                     # append build_id onto internal state
                     self.status['pending_builds'].append(build)
                     self.logger.info("Added build with id %s to queue.", build_id)
