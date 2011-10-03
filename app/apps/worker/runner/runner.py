@@ -187,7 +187,6 @@ class Runner:
                 if line:
                     step_output.append(line)
                     self.console_output(line)
-                time.sleep(0.01)
             self.build_log += step_output
 
             # if the return code shows that the task exited normally then the
@@ -211,6 +210,7 @@ class Runner:
             current_step.end_datetime = datetime.datetime.now()
             current_step.log = "\n".join(step_output)
             current_step.save()
+            time.sleep(1)
 
     @_stage('setup')
     def setup(self):
