@@ -221,6 +221,7 @@ class Runner:
         self.load_buildsteps()
         setup_step.log = "\n".join(self.stage_output_buffer['setup'])
         setup_step.end_datetime = datetime.datetime.now()
+        current_step.state = 'c'
         setup_step.save()
 
 
@@ -228,8 +229,11 @@ class Runner:
     def teardown(self):
         self.build.end_datetime = datetime.datetime.now()
         self.build.log = "\n".join(self.build_log)
+
+        #store duration interval in ms
         duration_delta = self.build.end_datetime - self.build.start_datetime
         self.build.duration_ms = duration_delta.seconds*1000000 + duration_delta.microseconds
+
         if False in self.build_state:
             self.build.state = 'd'
         else:
