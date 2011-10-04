@@ -7,22 +7,6 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = ['--with-django', '--stop']
 
 
-# celery config
-# -----------------------------------------------
-import djcelery
-djcelery.setup_loader()
-CELERY_TRACK_STARTED = True
-CELERY_DISABLE_RATE_LIMITS = True
-CELERYD_MAX_TASKS_PER_CHILD = 1
-CELERYD_CONCURRENCY = 1
-CELERYD_PREFETCH_MULTIPLIER = 1
-BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-CELERY_IMPORTS = (
-    "app.apps.worker.tasks",
-)
-
-
 # relay config
 # -----------------------------------------------
 BUILDRELAY_WEBSOCKET_HOST = "localhost"
@@ -50,3 +34,12 @@ COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', '%s --compile --stdio' % COFFEESCRIPT_EXECUTABLE),
     ('text/x-scss', '%s {infile} {outfile}' % SCSS_EXECUTABLE),
 )
+
+
+# gravatars
+# -----------------------------------------------
+# GRAVATAR_URL_PREFIX # The gravatar URL to use. Default: 'http://www.gravatar.com/'
+# GRAVATAR_DEFAULT_IMAGE
+# GRAVATAR_DEFAULT_RATING # The default rating to use. Default: 'g'.
+GRAVATAR_DEFAULT_SIZE = 36 # The default size to use. Default: 80.
+# GRAVATAR_IMG_CLASS

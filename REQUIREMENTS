@@ -29,5 +29,6 @@ eventlet
 dateutil
 sqlparse
 guppy
+django-gravatar
 line_profiler
 -e git+git://github.com/dcramer/django-devserver#egg=django-devserver

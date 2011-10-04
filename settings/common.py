@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'django_html',
     'django_nose',
     'poseur',
+    'gravatar',
 
     # internal
     'app.apps.target',
