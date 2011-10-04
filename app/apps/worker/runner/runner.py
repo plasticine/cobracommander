@@ -8,7 +8,7 @@ from django.utils.encoding import smart_unicode
 from django.utils import simplejson
 from django.utils.html import escape
 from functools import wraps
-import dateutil.parser
+from dateutil import parser as dateparse
 
 from app.apps.build.models import Step
 from app.apps.build.models import Build
@@ -67,10 +67,7 @@ class Runner:
 
     def console_output(self, data):
         self.stage_output_buffer[self.console_output_stage] += data
-        self.push_data({
-            'type':'console',
-            'data':data
-        })
+        self.push_data({'type':'console', 'data':data})
 
     def push_data(self, data):
         """
@@ -116,7 +113,7 @@ class Runner:
             self.console_output(line)
 
         # run reset hard against the repo to reset to our build refspec
-        cmd = 'git reset --hard "%s"' % (self.target.branch)
+        cmd = 'git reset --hard "origin/%s"' % (self.target.branch)
         self.console_output("running `%s`" % (cmd))
         for line in self.git.run(cmd):
             self.console_output(line)
@@ -127,10 +124,16 @@ class Runner:
         git_log = dict(zip(['refspec', 'refs', 'date', 'author_name',
             'author_email', 'message'], git_log[0].split('|')))
         git_log['message'] = escape(smart_unicode(git_log['message']))
-        self.push_data({
-            'type':'refspec',
-            'data':git_log
-        })
+
+        # save git info about the commit being built
+        self.build.git_refspec = git_log.get('refspec')
+        self.build.git_author_name = git_log.get('author_name')
+        self.build.git_author_email = git_log.get('author_email')
+        self.build.git_message = git_log.get('message')
+        self.build.git_commit_datetime = dateparse.parse(git_log.get('date'))
+        self.build.save()
+
+        self.push_data({'type':'refspec', 'data':git_log})
 
     def load_buildsteps(self):
         """
@@ -157,10 +160,7 @@ class Runner:
             buildfile.close()
 
             # send the loaded buildsteps back to the client
-            self.push_data({
-                'type':'build_steps',
-                'data':self.steps
-            })
+            self.push_data({'type':'build_steps', 'data':self.steps})
         except IOError, e:
             self.console_output("ERROR: Could not load build steps. %s" % (e))
 
@@ -173,11 +173,7 @@ class Runner:
             current_step = Step(build=self.build, command=step,
                 start_datetime=datetime.datetime.now(), sha=sha)
 
-            self.push_data({
-                'type':'step_start',
-                'step_hash':sha,
-                'step':step
-            })
+            self.push_data({'type':'step_start', 'step_hash':sha, 'step':step})
 
             # shell out and run the step command then handle the response and output
             step_output = list()
@@ -200,11 +196,8 @@ class Runner:
                 current_step.state = 'd'
                 self.build_state.append(False)
 
-            self.push_data({
-                'type':'step_complete',
-                'step_hash':sha,
-                'state':current_step.get_state_display()
-            })
+            self.push_data({'type':'step_complete', 'step_hash':sha,
+                'state':current_step.get_state_display()})
 
             # save the step execution out to the DB
             current_step.end_datetime = datetime.datetime.now()
@@ -221,7 +214,7 @@ class Runner:
         self.load_buildsteps()
         setup_step.log = "\n".join(self.stage_output_buffer['setup'])
         setup_step.end_datetime = datetime.datetime.now()
-        current_step.state = 'c'
+        setup_step.state = 'c'
         setup_step.save()
 
 
