@@ -14,6 +14,7 @@ class Project(models.Model):
     name = models.CharField(blank=False, max_length=100)
     name_slug = models.SlugField(blank=False, db_index=True, unique=True)
     url = models.CharField(blank=False, db_index=True, unique=True, max_length=255)
+    github_url = models.CharField(blank=True, unique=False, max_length=255)
     description = models.TextField(blank=True)
     created_datetime = models.DateTimeField(blank=False, default=datetime.datetime.now)
     targets = models.ManyToManyField(Target)
