@@ -22,6 +22,12 @@ class Build(models.Model):
     end_datetime = models.DateTimeField(blank=True, null=True)
     duration_ms = models.BigIntegerField(blank=True, null=True)
     log = models.TextField(blank=True)
+    git_refspec = models.CharField(blank=True, max_length=42)
+    git_author_name = models.CharField(blank=True, max_length=128)
+    git_author_email = models.CharField(blank=True, max_length=128)
+    git_message = models.TextField(blank=True)
+    git_commit_datetime = models.DateTimeField(blank=True, null=True)
+
 
     def __unicode__(self):
         return u"%s" % self.id
