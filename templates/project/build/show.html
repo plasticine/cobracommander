@@ -25,7 +25,7 @@
             <header><strong>Build</strong></header>
             <ol class="steps">
                 {% for step in build.build_steps %}
-                    <li id="build-stage-{{ step.sha }}" class="{{ step.get_state_display }}">
+                    <li id="build-stage-{{ step.sha }}" class="{% if step.get_state_display == 'pass' or step.get_state_display == 'fail' %}complete {% endif %}{{ step.get_state_display }}">
                         <strong>{{ step.command }}</strong>
                         <div class="console">
                             {% for line in step.log_lines %}

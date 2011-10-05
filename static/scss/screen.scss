@@ -12,4 +12,7 @@
 // generic application styles
 @import "styles/base";
 
+@import "styles/components/build_queue";
+
+@import "styles/partials/dashboard/show";
 @import "styles/partials/build/show";

@@ -1,42 +1,61 @@
 {% load markup %}
+{% load gravatar %}
 {% load typogrify %}
 
-<section>
+<section class="project">
   <header>
-    <a href="{{ project.get_absolute_url }}">
-      <h1>{{ project }}</h1>
-    </a>
-    <a href="#">Add build target</a>
+    <h1><a href="{{ project.get_absolute_url }}">{{ project }}</a></h1>
+    <a href="#" class="button add">new build target</a>
+    <code>{{ project.url }}</code>
   </header>
+  <div>
+    {{ project.description|markdown|typogrify }}
 
-  <a href="#">{{ project.url }}</a>
-  {{ project.description|markdown|typogrify }}
+    {% for target in project.targets.all %}
+      {% with target.builds.all|slice:":1"|first as build %}
 
-  {% for target in project.targets.all %}
-    {% with target.builds.all|slice:":1"|first as build %}
-      <section>
-        <header>
-          <strong class="{{ build.get_state_display|slugify }}">{{ build.get_state_display }}</strong>
-          <a href="{{ target.branch.get_absolute_url }}">
-            <h2>{{ target.branch }}</h2>
-          </a>
-          <form action="{% url target:build project_name_slug=project.name_slug branch=target.branch %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="build">
-          </form>
-        </header>
-        <section>
+        <section class="target {{ build.get_state_display|slugify }}">
+
           <header>
-            <strong>Last build:</strong> {{ build.start_datetime }} &rarr; {{ build.end_datetime }} ({{ build.duration }})
+            <a href="{{ target.branch.get_absolute_url }}">
+              <h2>{{ target.branch }}</h2>
+            </a>
+            <form action="{% url target:build project_name_slug=project.name_slug branch=target.branch %}" method="post">
+              {% csrf_token %}
+              <input type="submit" value="build">
+            </form>
           </header>
-          <ol>
-            {% for step in build.step_set.all %}
-              <li><strong class="{{ step.get_state_display|slugify }}">{{ step.get_state_display }}</strong> <code>{{ step.command }}</code></li>
-            {% endfor %}
-          </ol>
-        </section>
-      </section>
-    {% endwith %}
-  {% endfor %}
 
+          <section {% if not build %}class="empty"{% endif %}>
+            {% if build %}
+              <header>
+                <a href="{{ build.get_absolute_url }}">
+                  <h3>build #{{ build.id }}</h3>
+                </a>
+                {{ build.start_datetime }} &rarr; {{ build.end_datetime }} ({{ build.duration }})
+              </header>
+              <a href="{{ project.github_url }}commit/{{ build.git_refspec }}" class="commit">
+                <img src="{% gravatar_for_email build.git_author_email 36 %}" alt="{{ build.git_author_name }}">
+                <strong>{{ build.git_refspec }}</strong>
+                <a href="mailto:{{ build.git_author_email }}">{{ build.git_author_name }}</a>
+                {{ build.git_message }}
+                authored {{ build.git_commit_datetime }} ({{ build.git_commit_datetime|timesince }})
+              </a>
+              <ol class="build-steps">
+                {% for step in build.step_set.all %}
+                  <li>
+                    <strong class="{{ step.get_state_display|slugify }}">{{ step.get_state_display }}</strong> <code>{{ step.command }}</code></li>
+                {% endfor %}
+              </ol>
+            {% else %}
+              <p>{{ project }} has never been built.</p>
+            {% endif %}
+          </section>
+
+        </section>
+
+      {% endwith %}
+    {% endfor %}
+
+  </div>
 </section>

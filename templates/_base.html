@@ -10,10 +10,10 @@
         {% endblock stylesheets %}
     {% endcompress %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock body_class %}">
     <div id="container">
         {% block header %}
-            <header>
+            <header role="header">
                 {% block header-inner %}
                     <hgroup>
                         <a href="{% url dashboard:show %}" title="Cobra Commander">
@@ -22,11 +22,11 @@
                     </hgroup>
                 {% endblock header-inner %}
                 <nav>
-                    <ul id="project-list">
-                        <li>Projects</li>
+                    <ul>
+                        <li><a href="{% url dashboard:show %}">Dashboard</a></li>
                         {% for project in projects %}
                             <li>
-                                <a href="{{ project.get_absolute_url }}">
+                                <a href="{{ project.get_absolute_url }}" class="project">
                                     {{ project }}
                                 </a>
                             </li>
@@ -40,19 +40,16 @@
                 </nav>
             </header>
         {% endblock header %}
-        <section>
+        <section role="main">
             <div>
                 <section>
                     {% block main %}{% endblock %}
                 </section>
-                <aside>
+                <aside id="build-queue">
                     <header>
-                        <ul id="status">
-                            <li class="connection"></li>
-                            <li class="builder"></li>
-                        </ul>
+                        <h1 id="builder-status"></h1>
                     </header>
-                    <ol id="build-queue">
+                    <ol>
                         <li class="empty">No queued builds.</li>
                     </ol>
                     {% block aside %}{% endblock %}

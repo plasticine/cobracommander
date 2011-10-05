@@ -1,0 +1,53 @@
+
+body.dashboard{
+
+  #project-list{
+
+    .project{
+      margin-bottom: 40px;
+
+      >header{
+        background-color: #ddd;
+        overflow:auto;
+        padding: 8px 20px;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+
+        h1{
+          float: left;
+          font-size: 16px;
+          line-height: 22px;
+          margin: 0;
+          padding: 0;
+          a{ text-decoration: none; }
+        }
+        code{
+          float: left;
+          clear: left;
+          font-size: 11px;
+        }
+
+        // new build target button
+        .button{ float: right; }
+      }
+
+      >div{
+        padding: 20px;
+        border:1px solid #ddd;
+        -webkit-border-bottom-right-radius: 5px;
+        -webkit-border-bottom-left-radius: 5px;
+
+        .target{
+
+          .build-steps{
+            display: none;
+          }
+        }
+      }
+    }
+
+    .empty{
+
+    }
+  }
+}
