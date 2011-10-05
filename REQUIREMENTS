@@ -26,10 +26,12 @@ splinter
 GitPython
 lettuce
 eventlet
-python-dateutil
+python-dateutil==1.5
 sqlparse
 guppy
 redis
+gevent
+gevent-websocket
 django-gravatar
 line_profiler
 -e git+git://github.com/dcramer/django-devserver#egg=django-devserver
