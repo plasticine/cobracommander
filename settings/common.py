@@ -63,7 +63,6 @@ INSTALLED_APPS = (
     'gunicorn',
     'typogrify',
     'django_html',
-    'poseur',
     'gravatar',
 
     # internal

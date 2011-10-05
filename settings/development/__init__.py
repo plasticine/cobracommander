@@ -27,7 +27,8 @@ MIDDLEWARE_CLASSES = tuple(MIDDLEWARE_CLASSES)
 DEVELOPMENT_APPS = [
     'django_extensions',
     'debug_toolbar',
-    'devserver'
+    'devserver',
+    'poseur'
 ]
 INSTALLED_APPS = list(INSTALLED_APPS)
 INSTALLED_APPS += DEVELOPMENT_APPS
