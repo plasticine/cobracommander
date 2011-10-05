@@ -16,7 +16,6 @@ DATABASES = {
         'TEST_NAME':'%s_test' % PROJECT_NAME
     }
 }
-DATABASES['default']['NAME'] = '%s_development' % PROJECT_NAME
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
