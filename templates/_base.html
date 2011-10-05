@@ -77,7 +77,7 @@
         <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/lib/WebSocket.coffee"></script>
         <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/BuildQueue.coffee"></script>
         <script type="text/coffeescript">
-            $ -> new window.cc.BuildQueue("ws://localhost:9991/status")
+            $ -> new window.cc.BuildQueue("ws://localhost:9991/builder/status")
         </script>
         {% block scripts %}{% endblock scripts %}
     {% endcompress %}

@@ -21,8 +21,8 @@ class BuildRelay(WSGIWebsocketBase):
         self.logger = get_logger(__name__)
         self.builder = Builder()
         self.url_map = Map([
-            Rule('/status', endpoint=status.BuilderStatus(builder=self.builder)),
-            Rule('/build/<build_id>/console', endpoint=build.BuildConsole()),
-            Rule('/build/<build_id>/stop', endpoint=build.stop)
+            Rule('/builder/status', endpoint=status.BuilderStatus(builder=self.builder)),
+            Rule('/builder/<build_id>/console', endpoint=build.BuildConsole()),
+            Rule('/builder/<build_id>/stop', endpoint=build.stop)
         ])
         super(BuildRelay, self).__init__()
