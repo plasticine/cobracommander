@@ -33,7 +33,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 # -----------------------------------------------
 SITE_ID = 1
 INTERNAL_IPS = ('127.0.0.1',)
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = True
 SEND_BROKEN_LINK_EMAILS = True
 TIME_ZONE = 'UTC'

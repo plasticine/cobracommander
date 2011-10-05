@@ -1,12 +1,6 @@
 from .default import *
 
 
-# nose test runner settings
-# -----------------------------------------------
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-NOSE_ARGS = ['--with-django', '--stop']
-
-
 # relay config
 # -----------------------------------------------
 BUILDRELAY_WEBSOCKET_HOST = "localhost"
