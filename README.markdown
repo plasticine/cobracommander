@@ -11,25 +11,26 @@ In your codebase building your builds.
 - python requirements; see REQUIREMENTS.
 
 
-## Getting up and running
+## Getting up and running for development
 
 Install stuff:
 
-    brew install python rabbitmq postgres ... etc
+    brew install python redis postgres ... etc
 
 
 Set up the virtual environment for development:
 
     mkvirtualenv --no-site-packages --distribute cobracommander
     cdvirtualenv
-    echo "export DJANGO_SETTINGS_MODULE='settings.development'" >> bin/postactivate
+    echo "export DJANGO_SETTINGS_MODULE='settings.development'" > bin/postactivate
     echo "export PYTHONPATH='`pwd`/project/cobracommander'" >> bin/postactivate
-    echo "unset DJANGO_SETTINGS_MODULE" >> bin/depostactivate
+    echo "unset DJANGO_SETTINGS_MODULE" > bin/depostactivate
 
 
 Get the code, install requirements, set up DB, etc...
 
-    git clone git@github.com:tc/cobracommander project/cobracommander
+    git clone git://github.com/plasticine/cobracommander.git project/cobracommander
+    cd project/cobracommander
     pip install -r REQUIREMENTS
     createdb cobracommander_development
     django-admin.py syncdb
@@ -39,7 +40,7 @@ Get the code, install requirements, set up DB, etc...
 From here you should be able to run the app:
 
     django-admin.py runserver_plus              # run the dev server
-    django-admin.py celeryd --loglevel=INFO     # run the async worker
+    django-admin.py builder						# run the async worker
 
 ...and run the test suite:
 
