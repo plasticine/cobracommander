@@ -21,11 +21,8 @@ LETTUCE_AVOID_APPS = (
     'gunicorn',
     'typogrify',
     'django_html',
-    'django_nose',
     'django_extensions',
     'poseur',
-    'djkombu',
-    'djcelery',
 )
 
 # INSTALLED_APPS
