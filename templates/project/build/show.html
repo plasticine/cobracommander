@@ -50,7 +50,7 @@
     {% if not build.complete %}
         <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/BuildProgress.coffee"></script>
         <script type="text/coffeescript">
-            $ -> new window.cc.BuildProgress("ws://localhost:9991/build/{{ build.id }}/console")
+            $ -> new window.cc.BuildProgress({{ build.id }})
         </script>
     {% endif %}
 {% endblock %}

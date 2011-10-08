@@ -31,7 +31,8 @@ sqlparse
 guppy
 redis
 gevent
-gevent-websocket
 django-gravatar
 line_profiler
+django-socketio
 -e git+git://github.com/dcramer/django-devserver#egg=django-devserver
+gevent-socketio

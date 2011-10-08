@@ -2,6 +2,7 @@
 <html>
 <head>
     {% load compress %}
+    {% load socketio_tags %}
     <title>{% block title %}Cobra Commander{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     {% compress css %}
@@ -9,6 +10,7 @@
             <link type="text/x-scss" rel="stylesheet" href="{{ STATIC_URL }}scss/screen.scss" charset="utf-8">
         {% endblock stylesheets %}
     {% endcompress %}
+    {% socketio %}
 </head>
 <body class="{% block body_class %}{% endblock body_class %}">
     <div id="container">
@@ -77,7 +79,7 @@
         <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/lib/WebSocket.coffee"></script>
         <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/BuildQueue.coffee"></script>
         <script type="text/coffeescript">
-            $ -> new window.cc.BuildQueue("ws://localhost:9991/builder/status")
+            $ -> new window.cc.BuildQueue()
         </script>
         {% block scripts %}{% endblock scripts %}
     {% endcompress %}

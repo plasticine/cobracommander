@@ -98,7 +98,7 @@ class Step(models.Model):
     state = models.CharField(blank=True, max_length=1, default="a", choices=STATE_CHOICES)
 
     def __unicode__(self):
-        return u"%s" % (self.command)
+        return u"%s: %s" % (self.build, self.command)
 
     def log_lines(self):
         return self.log.split("\n")

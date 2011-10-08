@@ -1,4 +1,6 @@
-window.cc = {}
+window.cc = {
+  'socket':null
+}
 
 window.module = (name, fn)->
   if not @[name]?

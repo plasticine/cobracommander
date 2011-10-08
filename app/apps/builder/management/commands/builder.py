@@ -5,7 +5,7 @@ from optparse import make_option
 from werkzeug.routing import Map, Rule
 import os
 
-from app.apps.worker.build_relay import BuildRelay
+from app.apps.builder.build_relay import BuildRelay
 
 
 class Command(BaseCommand):

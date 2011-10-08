@@ -1,6 +1,7 @@
 @module "cc", ->
   class @BuildProgress extends cc.lib.Websocket
-    constructor: (url) ->
+    constructor: (build_id) ->
+      @build_id = build_id
       @currentStage = null
       @buildStages = $('#build-stages')
       @stages = {
@@ -8,11 +9,14 @@
         'build':    $('#stage-build', @buildStages),
         'teardown': $('#stage-teardown', @buildStages)
       }
-      super(url)
+      super()
       @connect(autoReconnect=false)
 
-    onmessage: (event) =>
-      @routeMessage(JSON.parse(event.data))
+    on_connect: =>
+      cc.socket.subscribe("build_#{@build_id}_output")
+
+    on_message: (data) =>
+      @routeMessage(JSON.parse(data))
 
     setupStage: (stageName) =>
       @currentStage = stageName

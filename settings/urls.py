@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
   url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
   url(r'^admin/', include(admin.site.urls)),
+  url(r'', include("django_socketio.urls")),
 )
 
 urlpatterns += patterns('',
@@ -15,6 +16,7 @@ urlpatterns += patterns('',
   url(r'^', include('%s.app.apps.target.urls' % settings.PROJECT_MODULE, namespace='target')),
   url(r'^', include('%s.app.apps.project.urls' % settings.PROJECT_MODULE, namespace='project')),
   url(r'^', include('%s.app.apps.build.urls' % settings.PROJECT_MODULE, namespace='build')),
+
 )
 
 urlpatterns += staticfiles_urlpatterns()

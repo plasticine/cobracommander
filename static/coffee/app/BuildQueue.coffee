@@ -1,10 +1,10 @@
 @module "cc", ->
   class @BuildQueue extends cc.lib.Websocket
-    constructor: (url) ->
+    constructor: ->
       @builderStatus = $('#builder-status')
       @buildQueue = $('#build-queue')
-      super(url)
       @initListeners()
+      super()
       @connect()
 
     initListeners: =>
@@ -15,21 +15,24 @@
         )
         .bind('build_queue_connected', =>
           @builderStatus.removeAttr('class').addClass('connected')
+          @setStatus('Connected')
         )
         .bind('build_queue_disconnected', =>
           @builderStatus.removeAttr('class').addClass('disconnected')
+          @setStatus('Disconnected')
         )
 
-    onconnecting: =>
+    on_connecting: =>
       $('body').trigger('build_queue_connecting')
 
-    onopen: =>
+    on_connect: =>
+      cc.socket.subscribe('build_queue')
       $('body').trigger('build_queue_connected')
 
-    onmessage: (event) =>
-      @parseMessage(JSON.parse(event.data))
+    on_message: (data) =>
+      @parseMessage(JSON.parse(data))
 
-    onclose: (event) =>
+    on_disconnect: (event) =>
       $('body').trigger('build_queue_disconnected')
 
     setStatus: (status) =>

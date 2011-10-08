@@ -1,12 +1,12 @@
 import redis
 import subprocess, shlex, os, time, random, multiprocessing, threading,\
     shutil, datetime, hashlib
-
 from collections import defaultdict
 from django.conf import settings
 from django.utils.encoding import smart_unicode
 from django.utils import simplejson
 from django.utils.html import escape
+from django.db import transaction, connection
 from functools import wraps
 from dateutil import parser as dateparse
 
@@ -22,6 +22,7 @@ class Runner:
     Execute a set of commands serially.
     """
     def __init__(self, build_id, parent_process_queue):
+        self.process_cleanup()
         self.logger = get_logger(__name__)
         self.build = Build.objects.select_related().get(id=build_id)
         self.target = self.build.target_set.all()[0]
@@ -37,6 +38,16 @@ class Runner:
         self.fail_steps = list()
         self.stage_output_buffer = defaultdict(list)
         self.run()
+        self.process_cleanup()
+
+    def process_cleanup(self):
+        import django.db
+        from django.core import cache
+        try:
+            cache.cache.close()
+        except (TypeError, AttributeError):
+            pass
+        return django.db.close_connection()
 
     @property
     def redis(self):
@@ -131,7 +142,8 @@ class Runner:
         self.build.git_author_email = git_log.get('author_email')
         self.build.git_message = git_log.get('message')
         self.build.git_commit_datetime = dateparse.parse(git_log.get('date'))
-        self.build.save()
+        with transaction.commit_on_success():
+            self.build.save()
 
         self.push_data({'type':'refspec', 'data':git_log})
 
@@ -202,7 +214,8 @@ class Runner:
             # save the step execution out to the DB
             current_step.end_datetime = datetime.datetime.now()
             current_step.log = "\n".join(step_output)
-            current_step.save()
+            with transaction.commit_on_success():
+                current_step.save()
             time.sleep(1)
 
     @_stage('setup')
@@ -215,8 +228,8 @@ class Runner:
         setup_step.log = "\n".join(self.stage_output_buffer['setup'])
         setup_step.end_datetime = datetime.datetime.now()
         setup_step.state = 'c'
-        setup_step.save()
-
+        with transaction.commit_on_success():
+            setup_step.save()
 
     @_stage('teardown')
     def teardown(self):
@@ -231,7 +244,8 @@ class Runner:
             self.build.state = 'd'
         else:
             self.build.state = 'c'
-        self.build.save()
+        with transaction.commit_on_success():
+            self.build.save()
         self.console_output("Build completed.")
         self.redis.delete("build_%s_output" % self.build.id)
         self.parent_process.put("COMPLETE", False)
@@ -243,4 +257,9 @@ class Runner:
         self.setup()
         self.run_build_steps()
         self.teardown()
+        self.profile_database()
+
+    def profile_database(self):
+        print "query count: %s" % (len(connection.queries))
+        print "\n"
 

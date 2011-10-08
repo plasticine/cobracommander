@@ -49,14 +49,14 @@ class Builder(object):
         })
 
     def run_builds(self):
+        build_queue = Queue()
         self.logger.info("Waiting for builds to run")
         while True:
             if len(self.status['pending_builds']) and self.is_idle:
                 self.status['active_build'] = self.status['pending_builds'].pop(0)
-                build_queue = Queue()
                 self.logger.info("Spawning new BuildRunner process for build id:%s",
                     self.status['active_build'].id)
-                self.process = Process(name='worker-%s' % self.status['active_build'].id,
+                self.process = Process(name='builder-%s' % self.status['active_build'].id,
                     target=Runner, args=(self.status['active_build'].id,
                     build_queue))
                 self.status['building'] = True
