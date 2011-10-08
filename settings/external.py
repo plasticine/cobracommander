@@ -3,8 +3,8 @@ from .default import *
 
 # relay config
 # -----------------------------------------------
-BUILDRELAY_WEBSOCKET_HOST = "localhost"
-BUILDRELAY_WEBSOCKET_PORT = 9991
+DJANGO_SOCKETIO_HOST = "localhost"
+DJANGO_SOCKETIO_PORT = 9991
 REDIS_DATABASE = {
     'host':"localhost",
     'port':6379,
