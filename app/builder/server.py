@@ -28,6 +28,3 @@ class BuilderServer(WSGIWebsocketBase):
 
 def root(request):
     return Response('hello from the builder server')
-
-if __name__ == '__main__':
-    BuilderServer()
