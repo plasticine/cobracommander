@@ -12,7 +12,7 @@ ensure_exists(virtualenv_dir, 'logs')
 ensure_exists(virtualenv_dir, 'tmp', 'pids')
 
 name = 'gunicorn_cobracommander'
-bind = '127.0.0.1:29001'
+bind = '0.0.0.0:29001'
 accesslog = os.path.join(ensure_exists(virtualenv_dir, 'logs'), 'gunicorn_access.log')
 errorlog = os.path.join(ensure_exists(virtualenv_dir, 'logs'), 'gunicorn_errors.log')
 pid = os.path.join(ensure_exists(virtualenv_dir, 'tmp', 'pids'), 'gunicorn.pid')
