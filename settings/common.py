@@ -68,6 +68,6 @@ INSTALLED_APPS = (
     # internal
     'app.apps.target',
     'app.apps.build',
-    'app.apps.builder',
     'app.apps.project',
+    'app.builder',
 )
