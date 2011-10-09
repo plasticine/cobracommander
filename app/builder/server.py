@@ -11,18 +11,20 @@ from .utils import get_logger
 from .utils.wsgi import WSGIWebsocketBase
 
 from .builder import Builder
-from .views import queue, build
+from .views import queue, build, socketio
 
-class BuildRelay(WSGIWebsocketBase):
+
+class BuilderServer(WSGIWebsocketBase):
     """
     BuildRelay runs a WSGI server and listens for connections over websockets.
     """
     def __init__(self):
         self.logger = get_logger(__name__)
-        self.builder = Builder()
         self.url_map = Map([
-            Rule('/builder/status', endpoint=status.BuilderStatus(builder=self.builder)),
-            Rule('/builder/build/<build_id>/console', endpoint=build.BuildConsole()),
-            Rule('/builder/build/<build_id>/stop', endpoint=build.stop)
+            Rule('/', endpoint=root),
+            Rule('/socket.io/<method>', endpoint=socketio.SocketIO()),
         ])
-        super(BuildRelay, self).__init__()
+        super(BuilderServer, self).__init__()
+
+def root(request):
+    return Response('hello from the builder server')

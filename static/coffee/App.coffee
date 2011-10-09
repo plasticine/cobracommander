@@ -1,5 +1,6 @@
 window.cc = {
-  'socket':null
+  'debug':    on,
+  'socket':   null
 }
 
 window.module = (name, fn)->

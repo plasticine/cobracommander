@@ -1,7 +1,7 @@
 import gevent
 from collections import defaultdict
 from django_socketio import events
-from ..status.status_accessor import StatusAccessor
+from ..utils.status_accessor import StatusAccessor
 from ..builder import Builder
 
 clients = set()

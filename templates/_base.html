@@ -2,7 +2,6 @@
 <html>
 <head>
     {% load compress %}
-    {% load socketio_tags %}
     <title>{% block title %}Cobra Commander{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     {% compress css %}
@@ -10,7 +9,7 @@
             <link type="text/x-scss" rel="stylesheet" href="{{ STATIC_URL }}scss/screen.scss" charset="utf-8">
         {% endblock stylesheets %}
     {% endcompress %}
-    {% socketio %}
+    <script src="{{ STATIC_URL }}scripts/vendor/socket.io.0.6.1.js"></script>
 </head>
 <body class="{% block body_class %}{% endblock body_class %}">
     <div id="container">
@@ -76,10 +75,13 @@
         <script type="text/javascript" src="{{ STATIC_URL }}scripts/vendor/json2.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}scripts/vendor/sugar.0.9.1.min.js"></script>
         <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/App.coffee"></script>
-        <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/lib/WebSocket.coffee"></script>
+        <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/lib/SocketIOWrapper.coffee"></script>
         <script type="text/coffeescript" src="{{ STATIC_URL }}coffee/app/BuildQueue.coffee"></script>
         <script type="text/coffeescript">
-            $ -> new window.cc.BuildQueue()
+            $ -> new window.cc.BuildQueue("#{window.location.hostname}", {
+                port: 9991,
+                rememberTransport: false
+            })
         </script>
         {% block scripts %}{% endblock scripts %}
     {% endcompress %}

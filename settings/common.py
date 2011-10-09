@@ -63,7 +63,6 @@ INSTALLED_APPS = (
     'typogrify',
     'django_html',
     'gravatar',
-    'django_socketio',
 
     # internal
     'app.apps.target',

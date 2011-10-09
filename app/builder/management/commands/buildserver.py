@@ -5,7 +5,7 @@ from optparse import make_option
 from werkzeug.routing import Map, Rule
 import os
 
-from app.builder.build_relay import BuildRelay
+from app.builder.server import BuilderServer
 
 
 class Command(BaseCommand):
@@ -13,4 +13,4 @@ class Command(BaseCommand):
     can_import_settings = True
 
     def handle(self, *args, **options):
-        relay = BuildRelay()
+        relay = BuilderServer()

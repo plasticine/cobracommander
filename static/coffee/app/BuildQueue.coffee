@@ -1,10 +1,10 @@
 @module "cc", ->
-  class @BuildQueue extends cc.lib.Websocket
-    constructor: ->
+  class @BuildQueue extends cc.lib.SocketIOWrapper
+    constructor: (url, options) ->
       @builderStatus = $('#builder-status')
       @buildQueue = $('#build-queue')
       @initListeners()
-      super()
+      super(url, options)
       @connect()
 
     initListeners: =>
@@ -26,7 +26,7 @@
       $('body').trigger('build_queue_connecting')
 
     on_connect: =>
-      cc.socket.subscribe('build_queue')
+      @subscribe('build_queue')
       $('body').trigger('build_queue_connected')
 
     on_message: (data) =>

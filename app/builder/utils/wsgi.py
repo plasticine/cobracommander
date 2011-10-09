@@ -2,7 +2,11 @@ from werkzeug.utils import redirect
 from werkzeug.wrappers import Request, Response
 from werkzeug.routing import Map, Rule
 from werkzeug.exceptions import HTTPException, NotFound
+
 from geventwebsocket.handler import WebSocketHandler
+from socketio.handler import SocketIOHandler
+from socketio.server import SocketIOServer
+
 from gevent import pywsgi
 from collections import defaultdict
 from django.conf import settings
@@ -18,12 +22,11 @@ class WSGIWebsocketBase(object):
 
     def serve(self):
         """ start server, listen for incoming requests """
-        # TODO: settings names are wrong?
-        connection = (settings.BUILDRELAY_WEBSOCKET_HOST,
-            settings.BUILDRELAY_WEBSOCKET_PORT)
+        connection = (settings.DJANGO_SOCKETIO_HOST,
+            settings.DJANGO_SOCKETIO_PORT)
         self.logger.info("Serving on http://%s:%s", connection[0], connection[1])
-        self.server = pywsgi.WSGIServer(connection, self.wsgi_app,
-            handler_class=WebSocketHandler)
+        self.server = SocketIOServer(connection, self.wsgi_app,
+            handler_class=SocketIOHandler, resource="socket.io", policy_server=False)
         try:
             self.server.serve_forever()
         except KeyboardInterrupt:

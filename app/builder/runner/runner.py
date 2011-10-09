@@ -257,9 +257,4 @@ class Runner:
         self.setup()
         self.run_build_steps()
         self.teardown()
-        self.profile_database()
-
-    def profile_database(self):
-        print "query count: %s" % (len(connection.queries))
-        print "\n"
 
