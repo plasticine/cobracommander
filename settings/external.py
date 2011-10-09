@@ -3,7 +3,7 @@ from .default import *
 
 # relay config
 # -----------------------------------------------
-DJANGO_SOCKETIO_HOST = "localhost"
+DJANGO_SOCKETIO_HOST = "0.0.0.0"
 DJANGO_SOCKETIO_PORT = 29002
 REDIS_DATABASE = {
     'host':"localhost",
