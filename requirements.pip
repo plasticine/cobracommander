@@ -1,0 +1,8 @@
+django==1.3
+psycopg2==2.4.1
+django_extensions
+south
+redis
+django-html
+django-debug-toolbar
+django_compressor
