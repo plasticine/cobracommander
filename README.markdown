@@ -15,7 +15,7 @@ In your codebase building your builds.
 
 Install stuff:
 
-    brew install python redis postgres libevent
+    brew install python redis postgres
     gem install sass
     npm install -g coffee-script
 
