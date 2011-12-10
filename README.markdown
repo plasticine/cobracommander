@@ -2,23 +2,56 @@
 
 In your codebase building your builds.
 
-## Development environment
+
+## What is Cobracommander?
+
+Cobracommander is a CI tool written in python. Cobracommander is made up of 3 components; Cobracommander, Henchman & Minion(s) — detailed below;
+
+### Cobracommander
+
+Cobracommander itself is just a django application. Its purpose is to act as a UI for controlling and administering projects and their associated build targets, and builds.
+
+Cobracommander communicates with Henchman (who actually does all the hard work) via basic HTTP POST requests and Cobracommander templates also set up Websocket (Socket.IO) connections to Henchman to steam down build progress logs and build queue status, etc.
+
+### Henchman
+
+Henchman is a separate, lightweight, server that provides HTTP and Socket.IO interfaces for communication. Henchman is responsible for managing the state of the build-queue and the Minions in it. Henchman provides HTTP interfaces for Cobracommander to start/stop/etc builds.
+
+### Minion(s)
+
+A Minion is basically an instance of a build for your project — either scheduled, or in-progress — in the Henchman build-queue.
+
+Minions are responsible for the setting up, reading the project Snakefile, running, and collection of output from a build. They also handle any cleanup and reporting required to finish off their build.
+
+### Snakefile
+
+A Cobracommander `snakefile` contains the steps to tell Cobracommander, and the Minion assigned to building your project how your project should be built.
+
+Snakefiles should output, or contain a JSON.
+
+At its simplest a Snakefile can just contain a JSON object listing the steps (commands, executed serially) required to complete a build of your project.
+
+To use Cobracommander you need to add a Snakefile (`snakefile`) to the root of your project. Needless to say; it should be under version control.
+
+
+## Developing
+
+### Requirements
 
 - python ~2.7
 - django 1.3
-- postgres
-- coffee & scss
-- python requirements; see REQUIREMENTS.
+- python requirements; see `requirements.pip`.
+
+#### Extras:
+
+- postgres, coffeescript & scss
 
 
-## Getting up and running for development
+### Getting up and running for development
 
 Install stuff:
 
-    brew install python redis postgres
-    gem install sass
-    npm install -g coffee-script
-
+    brew install python postgres
 
 Set up the virtual environment for development:
 
@@ -27,7 +60,6 @@ Set up the virtual environment for development:
     echo "export DJANGO_SETTINGS_MODULE='settings.development'" > bin/postactivate
     echo "export PYTHONPATH='`pwd`/project/cobracommander'" >> bin/postactivate
     echo "unset DJANGO_SETTINGS_MODULE" > bin/depostactivate
-
 
 Get the code, install requirements, set up DB, etc...
 
@@ -38,22 +70,5 @@ Get the code, install requirements, set up DB, etc...
     django-admin.py syncdb
     django-admin.py migrate
 
-
-From here you should be able to run the app:
-
-    django-admin.py runserver_plus              # run the dev server
-    django-admin.py builder						# run the async worker
-
-...and run the test suite:
-
-    django-admin.py harvest --settings="settings.test"
-    django-admin.py test --settings="settings.test"
-
-
-## Generating fake data
-
-    manage.py shell
-    from poseur.fixtures import load_fixtures
-    load_fixtures('app.apps.project.fixtures')
 
 __Boom.__
