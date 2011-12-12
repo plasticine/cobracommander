@@ -1,0 +1,12 @@
+{% block header %}
+  <header role="header">
+    {% block header-inner %}
+      <hgroup>
+        <a href="{% url project:index %}" title="Cobra Commander">
+          <h1>Cobra Commander</h1>
+        </a>
+      </hgroup>
+    {% endblock header-inner %}
+    {% include "_common/_navigation.html" %}
+  </header>
+{% endblock header %}

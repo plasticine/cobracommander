@@ -1,0 +1,17 @@
+<nav>
+  <ul>
+    <li><a href="{% url project:index %}">Dashboard</a></li>
+    {% for project in projects %}
+      <li>
+        <a href="{{ project.get_absolute_url }}" class="project">
+          {{ project }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+  <ul id="actions">
+    <li>
+      <a href="{% url project:new %}">New project</a>
+    </li>
+  </ul>
+</nav>

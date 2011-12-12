@@ -4,47 +4,29 @@
     {% load compress %}
     <title>{% block title %}Cobra Commander{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <script type="text/javascript" src="//:7000/static/javascripts/jquery.1.7.1.js"></script>
-    <script type="text/javascript" src="//:7000/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="//:7000/static/javascripts/socket.io.channels.js"></script>
+    {% compress css %}
+      {% block stylesheets %}
+          <link type="text/x-scss" rel="stylesheet" href="{{ STATIC_URL }}scss/screen.scss" charset="utf-8">
+      {% endblock stylesheets %}
+    {% endcompress %}
   </head>
   <body class="{% block body-class %}{% endblock body-class %}">
     <div id="container">
-      {% block header %}
-        <header role="header">
-          {% block header-inner %}
-            <hgroup>
-              <a href="{% url project:index %}" title="Cobra Commander">
-                <h1>Cobra Commander</h1>
-              </a>
-            </hgroup>
-          {% endblock header-inner %}
-          <nav>
-            <ul>
-              <li><a href="{% url project:index %}">Dashboard</a></li>
-              {% for project in projects %}
-                <li>
-                  <a href="{{ project.get_absolute_url }}" class="project">
-                    {{ project }}
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-            <ul id="actions">
-              <li>
-                <a href="{% url project:new %}">New project</a>
-              </li>
-            </ul>
-          </nav>
-        </header>
-      {% endblock header %}
+      {% include "_common/_header.html" %}
       <section role="main">
         {% block main %}{% endblock %}
       </section>
     </div>
+    <script type="text/javascript" src="//:9000/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="//:9000/static/javascripts/socket.io.channels.js"></script>
+    {% compress js %}
+      <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/jquery.1.7.1.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/json2.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/minpubsub.js"></script>
+    {% endcompress %}
     <script type="text/javascript">
       $(function(){
-        var socket = new io.Socket('localhost', {'port':7000});
+        var socket = new io.Socket('localhost', {'port':9000});
         socket.on('connect', function() {
           console.log('socket:connected');
           socket.subscribe('test');
