@@ -1,43 +1,63 @@
 {% load html %}{% doctype "html5" %}
 <html>
-    <head>
-        {% load compress %}
-        <title>{% block title %}Cobra Commander{% endblock %}</title>
-        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    </head>
-    <body class="{% block body_class %}{% endblock body_class %}">
-        <div id="container">
-            {% block header %}
-                <header role="header">
-                    {% block header-inner %}
-                        <hgroup>
-                            <a href="{% url project:index %}" title="Cobra Commander">
-                                <h1>Cobra Commander</h1>
-                            </a>
-                        </hgroup>
-                    {% endblock header-inner %}
-                    <nav>
-                        <ul>
-                            <li><a href="{% url project:index %}">Dashboard</a></li>
-                            {% for project in projects %}
-                                <li>
-                                    <a href="{{ project.get_absolute_url }}" class="project">
-                                        {{ project }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <ul id="actions">
-                            <li>
-                                <a href="{% url project:new %}">New project</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </header>
-            {% endblock header %}
-            <section role="main">
-                {% block main %}{% endblock %}
-            </section>
-        </div>
-    </body>
+  <head>
+    {% load compress %}
+    <title>{% block title %}Cobra Commander{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script type="text/javascript" src="//:7000/static/javascripts/jquery.1.7.1.js"></script>
+    <script type="text/javascript" src="//:7000/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="//:7000/static/javascripts/socket.io.channels.js"></script>
+  </head>
+  <body class="{% block body-class %}{% endblock body-class %}">
+    <div id="container">
+      {% block header %}
+        <header role="header">
+          {% block header-inner %}
+            <hgroup>
+              <a href="{% url project:index %}" title="Cobra Commander">
+                <h1>Cobra Commander</h1>
+              </a>
+            </hgroup>
+          {% endblock header-inner %}
+          <nav>
+            <ul>
+              <li><a href="{% url project:index %}">Dashboard</a></li>
+              {% for project in projects %}
+                <li>
+                  <a href="{{ project.get_absolute_url }}" class="project">
+                    {{ project }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+            <ul id="actions">
+              <li>
+                <a href="{% url project:new %}">New project</a>
+              </li>
+            </ul>
+          </nav>
+        </header>
+      {% endblock header %}
+      <section role="main">
+        {% block main %}{% endblock %}
+      </section>
+    </div>
+    <script type="text/javascript">
+      $(function(){
+        var socket = new io.Socket('localhost', {'port':7000});
+        socket.on('connect', function() {
+          console.log('socket:connected');
+          socket.subscribe('test');
+        });
+        socket.on('disconnect', function() {
+          console.log('socket:disconnect');
+        });
+        socket.on('message', function(data) {
+          console.log('socket:message', data);
+        });
+        socket.connect();
+        console.log(socket);
+      });
+    </script>
+  </body>
 </html>
