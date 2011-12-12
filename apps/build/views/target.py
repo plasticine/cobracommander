@@ -28,8 +28,8 @@ def build_target(request, name_slug, refspec):
 
       # push the build id onto the build queue by making a POST request
       # to Henchman
-
+      post_data = { 'id': build.id }
+      request = requests.post('http://localhost:9000/builds/new', data=post_data)
 
       return HttpResponseRedirect(build.get_absolute_url())
-
     raise Http404
