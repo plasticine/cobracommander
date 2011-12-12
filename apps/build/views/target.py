@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.conf import settings
-import redis
+import requests
 
 from ..models.target import Target
 from ..models.build import Build
@@ -26,9 +26,9 @@ def build_target(request, name_slug, refspec):
       target.builds.add(build)
       target.save()
 
-      # push the build id onto the build queue
-      build_queue = redis.Redis(**settings.REDIS_DATABASE)
-      build_queue.rpush('build_queue', build.id)
+      # push the build id onto the build queue by making a POST request
+      # to Henchman
+
 
       return HttpResponseRedirect(build.get_absolute_url())
 
