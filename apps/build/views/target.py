@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 import requests
 import hashlib
-from datetime import datetime
 
 from ..models.target import Target
 from ..models.build import Build
@@ -31,7 +30,7 @@ def build_target(request, name_slug, refspec=None):
         refspec = github_postcommit_data['ref'].split('/')[-1]
 
       target = get_object_or_404(Target, project=project, refspec=refspec)
-      uuid = hashlib.sha224("%s%s%s" % (project, target, datetime.now())).hexdigest()[:7]
+      uuid = hashlib.sha224("%s%s" % (project, target)).hexdigest()[:7]
       build = Build(project=project, uuid=uuid)
       build.save()
       target.builds.add(build)
