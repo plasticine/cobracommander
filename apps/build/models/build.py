@@ -13,6 +13,7 @@ class Build(models.Model):
     snakefile.
     """
 
+    uuid                    = models.CharField(blank=False, max_length=7)
     project                 = models.ForeignKey('project.Project')
 
     created_datetime        = models.DateTimeField(blank=False, default=datetime.datetime.now)
