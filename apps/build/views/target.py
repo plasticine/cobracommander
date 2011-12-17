@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.db import transaction
 import requests
 import hashlib
 
@@ -10,6 +11,7 @@ from ..models.target import Target
 from ..models.build import Build
 from apps.project.models import Project
 
+@transaction.autocommit
 def build_target(request, name_slug, refspec=None):
     """
     Trigger a build run on the given target and project.
@@ -20,6 +22,10 @@ def build_target(request, name_slug, refspec=None):
     If `refspec` is passed then the build was probably started by cobracommander.
     If it is not present it usually means that it was triggered by a GitHub
     post-commit hook.
+
+    View needs to be autocommited as we are doing the POST to henchman in here
+    that will kick off a DB query looking for out newly minted record when will
+    not yet be there if we are using transactions on_success.
     """
     if request.method == 'POST':
       project = get_object_or_404(Project, name_slug=name_slug)
