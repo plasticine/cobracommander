@@ -39,19 +39,21 @@ To use Cobracommander you need to add a Snakefile (`snakefile`) to the root of y
 ### Requirements
 
 - python ~2.7
-- django 1.3
+- django 1.4 alpha
+- postgres
 - python requirements; see `requirements.pip`.
 
-#### Extras:
+#### Development Requirements:
 
-- postgres, coffeescript & scss
+- node, npm, coffeescript & scss
 
 
 ### Getting up and running for development
 
 Install stuff:
 
-    brew install python postgres
+    brew install python postgres node
+    curl http://npmjs.org/install.sh | sh
 
 Set up the virtual environment for development:
 
@@ -65,6 +67,7 @@ Get the code, install requirements, set up DB, etc...
 
     git clone git://github.com/plasticine/cobracommander.git project/cobracommander
     cd project/cobracommander
+    npm install requirejs
     pip install -r REQUIREMENTS
     createdb cobracommander_development
     django-admin.py syncdb
