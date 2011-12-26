@@ -9,7 +9,8 @@ def index(request):
     """
     Dashboard view. Show all projects.
     """
+    projects = Project.objects.all().prefetch_related('targets')
 
     return render_to_response('project/index.html', {
-        "projects": Project.objects.all(),
+        "projects": projects,
     }, context_instance=RequestContext(request))
