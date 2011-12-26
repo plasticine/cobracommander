@@ -7,6 +7,7 @@ from ..models.build import Build
 from ..models.step import Step
 from apps.project.models import Project
 
+
 def show(request, name_slug, refspec, id):
     """
     Show the details of a build.
