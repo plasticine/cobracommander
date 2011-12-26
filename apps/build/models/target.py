@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 from .build import Build
 
+
 class Target(models.Model):
     """
     A Target provides a link between a Project and refspec in the Project codebase.
@@ -26,5 +27,8 @@ class Target(models.Model):
         app_label = 'build'
 
     def __unicode__(self):
-        return u"%s - %s" % (self.project, self.refspec)
+        return u"%s" % self.refspec
+
+    def most_recent_build(self):
+        return self.builds.all()[:1]
 
