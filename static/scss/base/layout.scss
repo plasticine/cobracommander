@@ -1,0 +1,45 @@
+$aside_width:   300px;
+
+html, body, #container{ height: 100%; }
+
+#container{
+  position: relative;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+
+  header[role="header"]{
+    -webkit-box-flex: 0;
+    background-color: #ddd;
+    hgroup{ padding: 25px; }
+    #active-build{
+      width: $aside_width;
+      height: 100%;
+      margin: 15px;
+      padding: 10px;
+      border: 1px solid #aaa;
+      text-align: center;
+    }
+    #new-project{
+      display: block;
+      padding: 11px 25px;
+      margin: 15px 20px 15px 0;
+    }
+  }
+
+  section[role="main"]{
+    display: -webkit-box;
+    -webkit-box-flex: 1;
+    -webkit-box-orient: horizontal;
+
+    >div, >aside{ padding: 25px; }
+    >div{
+      -webkit-box-flex: 1;
+      overflow-y: scroll;
+    }
+    >aside{
+      -webkit-box-flex: 0;
+      width: $aside_width;
+      background-color: #aaa;
+    }
+  }
+}
