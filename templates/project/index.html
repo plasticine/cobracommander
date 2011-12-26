@@ -4,4 +4,33 @@
   <header>
     <h2>Dashboard</h2>
   </header>
+  <section id="projects" class="project-list">
+    {% for project in projects %}
+      <article class="project">
+        <header>
+          <h3>
+            <a href="{{ project.get_absolute_url }}">
+              {{ project }}
+            </a>
+          </h3>
+        </header>
+        <ol>
+          {% for target in project.targets.all %}
+            <li>
+              <article>
+                <h4>{{ target }}</h4>
+                <ol>
+                  {% for build in target.most_recent_build %}
+                    <li>
+                      <a href="{{ build.get_absolute_url }}">{{ build }}</a>
+                    </li>
+                  {% endfor %}
+                </ol>
+              </article>
+            </li>
+          {% endfor %}
+        </ol>
+      </article>
+    {% endfor %}
+  </section>
 {% endblock main %}

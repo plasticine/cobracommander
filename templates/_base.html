@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     {% compress css %}
       {% block stylesheets %}
-          <link type="text/x-scss" rel="stylesheet" href="{{ STATIC_URL }}scss/screen.scss" charset="utf-8">
+        <link type="text/x-scss" rel="stylesheet" href="{{ STATIC_URL }}scss/screen.scss" charset="utf-8">
       {% endblock stylesheets %}
     {% endcompress %}
   </head>
@@ -14,32 +14,14 @@
     <div id="container">
       {% include "_common/_header.html" %}
       <section role="main">
-        {% block main %}{% endblock %}
+        <div>
+          {% block main %}{% endblock main %}
+        </div>
+        <aside>
+          {% block aside %}{% endblock aside %}
+        </aside>
       </section>
     </div>
-    <script type="text/javascript" src="//:9000/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="//:9000/static/javascripts/socket.io.channels.js"></script>
-    {% compress js %}
-      <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/jquery.1.7.1.js"></script>
-      <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/json2.js"></script>
-      <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/minpubsub.js"></script>
-    {% endcompress %}
-    <script type="text/javascript">
-      $(function(){
-        var socket = new io.Socket('localhost', {'port':9000});
-        socket.on('connect', function() {
-          console.log('socket:connected');
-          socket.subscribe('test');
-        });
-        socket.on('disconnect', function() {
-          console.log('socket:disconnect');
-        });
-        socket.on('message', function(data) {
-          console.log('socket:message', data);
-        });
-        socket.connect();
-        console.log(socket);
-      });
-    </script>
+    <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/require.1.0.3.js" data-main="{{ STATIC_URL }}javascripts/app"></script>
   </body>
 </html>
