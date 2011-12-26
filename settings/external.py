@@ -1,17 +1,5 @@
 from .default import *
 
-
-# relay config
-# -----------------------------------------------
-DJANGO_SOCKETIO_HOST = "0.0.0.0"
-DJANGO_SOCKETIO_PORT = 29002
-REDIS_DATABASE = {
-    'host':"localhost",
-    'port':6379,
-    'db':0
-}
-
-
 # compressor
 # -----------------------------------------------
 COMPRESS_ENABLED = True # Automatically set to the opposite of DEBUG if NOT set
@@ -21,14 +9,14 @@ COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_OUTPUT_DIR = 'cache'
 COMPRESS_STORAGE = 'compressor.storage.CompressorFileStorage'
 COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter',]
-COFFEESCRIPT_EXECUTABLE = 'coffee'
-SCSS_EXECUTABLE = 'sass'
-COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
+COMPRESS_COFFEE_BINARY = 'coffee'
+COMPRESS_SCSS_BINARY = 'sass'
+COMPRESS_RJS_BINARY = "./node_modules/requirejs/bin/r.js"
+COMPRESS_RJS_ARGUMENTS = "-o build.js"
 COMPRESS_PRECOMPILERS = (
-    ('text/coffeescript', '%s --compile --stdio' % COFFEESCRIPT_EXECUTABLE),
-    ('text/x-scss', '%s {infile} {outfile}' % SCSS_EXECUTABLE),
+  ('text/coffeescript', '%s --compile --stdio' % COMPRESS_COFFEE_BINARY),
+  ('text/x-scss', '%s {infile} {outfile}' % COMPRESS_SCSS_BINARY),
 )
-
 
 # gravatars
 # -----------------------------------------------

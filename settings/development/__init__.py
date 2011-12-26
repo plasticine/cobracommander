@@ -33,12 +33,22 @@ INSTALLED_APPS += DEVELOPMENT_APPS
 INSTALLED_APPS = tuple(INSTALLED_APPS)
 
 
-# database
+# CONTEXT PROCESSORS
+# --------------------------------------
+DEVELOPMENT_TEMPLATE_CONTEXT_PROCESSORS = [
+    'lib.compressor.context_processors.brew_coffee',
+]
+TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS)
+TEMPLATE_CONTEXT_PROCESSORS += DEVELOPMENT_TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS = tuple(TEMPLATE_CONTEXT_PROCESSORS)
+
+
+# DATABASE
 # --------------------------------------
 DATABASES['default']['NAME'] = '%s_development' % PROJECT_NAME
 
 
-# debug toolbar config
+# Debug toolbar config
 # --------------------------------------
 def show_dev_toolbar(request):
     from django.conf import settings
