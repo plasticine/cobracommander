@@ -1,14 +1,23 @@
 new cc.lib.Template 'build', """
-  <article>
-    <a href="{{ url }}">project: {{ project }}</a>
-    ({{ created_datetime }})
-    <a href="#" class="cancel">cancel</a>
+  <article class="{{ status }}">
+    <header>
+      <h5>
+        <a href="{{ build.absolute_url }}">
+          {{ target.project }}
+          <code>{{ target.refspec }}</code>
+        </a>
+      </h5>
+      <a href="#" class="cancel">cancel</a>
+    </header>
+    <dl class="details">
+      <dt>created:</dt>
+      <dd>{{ build.created_datetime }}</dd>
+      <dt>build uuid:</dt>
+      <dd>{{ build.uuid }}</dd>
+    </dl>
   </article>
 """
 
-new cc.lib.Template 'active_build', """
-  <article>
-    Active! <a href="{{ url }}">project: {{ project }}</a>
-    <a href="#" class="cancel">cancel</a>
-  </article>
+new cc.lib.Template 'build_status', """
+  {{ status }}
 """

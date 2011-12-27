@@ -4,19 +4,19 @@ require [
   'vendor/backbone.0.5.3',
   'vendor/minpubsub',
   'templates/build_queue/build'
-], (options...) ->
+], (requirements...) ->
 
-  Backbone = options[2]
+  Backbone = requirements[2]
+
+  $ ->
+    new BuildQueueController
+      buildQueueEl: $('#build-queue'),
+      url: "localhost",
+      options:
+        port: 9000
+
 
   class Build extends Backbone.Model
-    defaults:
-      project:                "Some Project"
-      active:                 false
-      url:                    "/foo/bar"
-      created_datetime:       new Date
-      start_datetime:         null
-      end_datetime:           null
-      duration:               null
 
 
   class Builds extends Backbone.Collection
@@ -24,12 +24,9 @@ require [
 
 
   class BuildView extends Backbone.View
-    """
-    Represents a single view for a build instance in the build queue.
-    """
-    template: cc._template_cache['build']
-    events:
-      'click .cancel':   "cancelBuild"
+    # Represents a single view for a build instance in the build queue.
+    template:   cc._template_cache['build']
+    events:     'click .cancel':   "cancelBuild"
 
     initialize: (options) =>
       @element = $(@el)
@@ -44,12 +41,8 @@ require [
 
 
   class ActiveBuildView extends Backbone.View
-    """
-    Represents a view for the active build instance in the build queue.
-    """
-    template: cc._template_cache['active_build']
-    events:
-      'click .cancel':   "cancelBuild"
+    template:   cc._template_cache['active_build']
+    events:     'click .cancel':   "cancelBuild"
 
     initialize: (options) =>
       @element = $(@el)
@@ -63,32 +56,45 @@ require [
       alert 'cancel clicked'
 
 
-  class BuildQueueController
+  class BuildQueueStatusView extends Backbone.View
+    el:         "#build-queue-status",
+    template:   cc._template_cache['build_status']
+
+    initialize: (options) =>
+      @element = $(@el)
+      @initListeners()
+
+    initListeners: =>
+      subscribe "build_queue/on_connecting",  => @render status: "connecting"
+      subscribe "build_queue/on_connect",     => @render status: "connected"
+      subscribe "build_queue/disconnect",     => @render status: "disconnected"
+
+    render: (context) =>
+      @element.html @template.render(context)
+
+
+  class BuildQueueController extends cc.lib.SocketIO
     constructor: (options) ->
-      @buildQueueEl = options.el
-      @loadBuilds()
-      @initBuildViews()
-
-    loadBuilds: =>
+      super options.url, options.options
+      @buildQueueEl = options.buildQueueEl
+      @buildQueueStatusView = new BuildQueueStatusView
       @builds = new Builds
+      @connect()
 
-      $.getJSON '/', (projects) ->
-        console.log projects
+    on_connecting: =>
+      publish "build_queue/on_connecting"
 
-      @builds.add [
-        {project: "foo"}
-        {project: "bar"}
-        {project: "baz"}
-      ]
+    on_connect: =>
+      publish "build_queue/on_connect"
+      @subscribe 'build_queue'
 
-    initBuildViews: =>
-      @builds.each (build) =>
-        @initBuildView build
-
-    initBuildView: (build) =>
-      buildView = new BuildView(model: build)
-      @buildQueueEl.append buildView.el
-
-  $ ->
-    new BuildQueueController el: $('#build-queue')
+    on_message: (message) =>
+      message = JSON.parse message
+      if message.length
+        @buildQueueEl.empty()
+        @builds.add message
+        @builds.each (build) =>
+          buildView = new BuildView(model: build)
+          @buildQueueEl.append buildView.el
+          console.log build
 

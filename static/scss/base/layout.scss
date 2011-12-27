@@ -11,7 +11,7 @@ html, body, #container{ height: 100%; }
     -webkit-box-flex: 0;
     background-color: #ddd;
     hgroup{ padding: 25px; }
-    #active-build{
+    #build-queue-status{
       width: $aside_width;
       height: 100%;
       margin: 15px;

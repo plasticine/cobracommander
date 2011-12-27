@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
-  url(r'^api/', include('%s.apps.api.urls' % settings.PROJECT_MODULE, namespace='api'),
+  url(r'^api/', include('%s.apps.api.urls' % settings.PROJECT_MODULE, namespace='api')),
   url(r'^', include('%s.apps.project.urls' % settings.PROJECT_MODULE, namespace='project')),
   url(r'^', include('%s.apps.build.urls' % settings.PROJECT_MODULE, namespace='build')),
 )

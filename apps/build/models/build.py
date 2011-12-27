@@ -43,3 +43,6 @@ class Build(models.Model):
             'refspec':self.target_set.all()[0].refspec
         })
 
+    @property
+    def target(self):
+        return self.target_set.all()[0]
