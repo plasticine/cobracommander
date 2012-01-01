@@ -1,11 +1,21 @@
 {% extends "_base.html" %}
 
 {% block main %}
+
+    {% set_onload_handler "build" build_uuid=build.uuid %}
+
     <section>
         <header>
             <h1>
                 <a href="{{ project.get_absolute_url }}">{{ project }}</a> &bull; <a href="{{ build.get_absolute_url }}">build {{ build }}</a>
             </h1>
         </header>
+        <ul>
+          <li><strong></strong>{{ project }}</li>
+          <li><strong></strong>{{ build.target }}</li>
+          <li><strong></strong>{{ build.uuid }}</li>
+          <li><strong></strong>{{ build.created_datetime }}</li>
+        </ul>
+        <div id="console-output"></div>
     </section>
 {% endblock %}

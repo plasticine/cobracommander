@@ -27,6 +27,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.csrf',
     'django.core.context_processors.request',
+    'lib.context_processors.onload_handlers',
 )
 
 TEMPLATE_TAGS = (

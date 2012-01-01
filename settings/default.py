@@ -1,4 +1,6 @@
 import os, sys
+from django.template.loader import add_to_builtins
+
 
 # Paths and path helpers
 # -----------------------------------------------
@@ -81,6 +83,15 @@ CACHES = {
         'LOCATION': ensure_exists(environment('tmp', 'cache')),
     }
 }
+
+
+# Extra built-in template-tags
+# -----------------------------------------------
+EXTRA_BUILTIN_TEMPLATETAGS = (
+    'lib.templatetags.onload_handlers',
+)
+for builtin in EXTRA_BUILTIN_TEMPLATETAGS:
+    add_to_builtins(builtin)
 
 
 # Logging settings

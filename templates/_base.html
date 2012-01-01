@@ -20,6 +20,11 @@
         <aside id="build-queue"></aside>
       </section>
     </div>
+    {% set_onload_handler "build_queue" %}
+    {% get_onload_handlers as handlers %}
+    {% if handlers %}
+      <script type="text/javascript">window.onload_handlers = {{ handlers }};</script>
+    {% endif %}
     <script type="text/javascript" src="{{ STATIC_URL }}javascripts/vendor/require.1.0.3.js" data-main="{{ STATIC_URL }}javascripts/app"></script>
   </body>
 </html>
