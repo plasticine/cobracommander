@@ -18,7 +18,7 @@ class Target(models.Model):
     """
 
     project                 = models.ForeignKey('project.Project')
-    builds                  = models.ManyToManyField(Build, blank=True, null=True)
+    builds                  = models.ManyToManyField(Build, blank=True, null=True, related_name="builds")
 
     created_datetime        = models.DateTimeField(blank=False, default=datetime.datetime.now)
     refspec                 = models.CharField(blank=False, max_length=128)
