@@ -7,7 +7,7 @@ config = {
     'DJANGO_SETTINGS_MODULE':'settings.test'
   },
   'build':[
-    'manage.py test'
+    'behave ./henchman/tests'
   ],
   'hooks':{
     'before_build':['git clean -dfx'],

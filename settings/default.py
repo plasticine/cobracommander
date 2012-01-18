@@ -1,7 +1,6 @@
 import os, sys
 from django.template.loader import add_to_builtins
 
-
 # Paths and path helpers
 # -----------------------------------------------
 def ensure_exists(path):
@@ -39,14 +38,12 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 SEND_BROKEN_LINK_EMAILS = True
 TIME_ZONE = 'UTC'
-SOCKETIO_HOST = 'localhost'
-SOCKETIO_PORT = 8000
 LANGUAGE_CODE = 'en-au'
 ROOT_URLCONF = '%s.settings.urls' % PROJECT_MODULE
 IGNORABLE_404_STARTS = ('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi', 'favicon.ico', 'favicon.ico/', '.php')
 DEFAULT_FROM_EMAIL = 'cobracommander@localhost'
 SERVER_EMAIL = 'cobracommander@localhost'
-BUILD_FILE_NAME = 'buildfile'
+BUILD_FILE_NAME = 'snakefile'
 
 
 # Authentication settings
@@ -62,7 +59,6 @@ TEMPLATE_DIRS = (project('templates'),)
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    # 'django.template.loaders.eggs.Loader',
 )
 
 
