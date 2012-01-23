@@ -41,6 +41,7 @@ To use Cobracommander you need to add a Snakefile (`snakefile`) to the root of y
 - python ~2.7
 - django 1.4 alpha
 - postgres
+- libevent
 - python requirements; see `requirements.pip`.
 
 #### Development Requirements:
@@ -52,7 +53,7 @@ To use Cobracommander you need to add a Snakefile (`snakefile`) to the root of y
 
 Install stuff:
 
-    brew install python postgres node
+    brew install python postgres node libevent
     curl http://npmjs.org/install.sh | sh
 
 Set up the virtual environment for development:
