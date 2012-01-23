@@ -2,3 +2,4 @@
 static/cache/*
 .sass-cache
 node_modules
+static/javascripts/*
