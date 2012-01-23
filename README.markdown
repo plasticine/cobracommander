@@ -75,4 +75,14 @@ Get the code, install requirements, set up DB, etc...
     django-admin.py migrate
 
 
+### Notes
+
+#### Tests
+
+Accepetance tests live in `./test` and are written using the Behave BDD testing tool.
+Apps are tested via a combination of unittest and doctests and live in `./test` within each app.
+
+Code coverage reports are available using `python manage.py coverage`
+
+
 __Boom.__
