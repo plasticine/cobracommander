@@ -1,5 +1,4 @@
 import datetime
-import hashlib
 
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -44,13 +43,3 @@ class Build(models.Model):
             'name_slug':self.project.name_slug,
             'refspec':self.target.refspec
         })
-
-    def save(self, *args, **kwargs):
-        """
-        Call save twice here so we can access the build id once it has been
-        created. :/
-        """
-        super(Build, self).save(*args, **kwargs)
-        self.uuid = hashlib.sha224("%s:%s:%s" % (self.project, self.target,
-                                    self.id)).hexdigest()[:7]
-        super(Build, self).save(*args, **kwargs)
