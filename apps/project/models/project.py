@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
 
 class Project(models.Model):
     """
@@ -16,7 +17,7 @@ class Project(models.Model):
     created_datetime    = models.DateTimeField(blank=False, default=datetime.datetime.now)
 
     name                = models.CharField(blank=False, max_length=100)
-    name_slug           = models.SlugField(blank=False, db_index=True, unique=True)
+    name_slug           = models.SlugField(blank=True, db_index=True, unique=True)
     url                 = models.CharField(blank=False, db_index=True, unique=True, max_length=255)
     github_url          = models.CharField(blank=True, unique=False, max_length=255)
     description         = models.TextField(blank=True)
@@ -32,3 +33,10 @@ class Project(models.Model):
         return ('project:show', (), {
             'name_slug':self.name_slug
         })
+
+    def save(self, *args, **kwargs):
+        """
+        set the name_slug from name on save
+        """
+        self.name_slug = u'%s' % slugify(self.name)
+        super(Project, self).save(*args, **kwargs)
